@@ -1,0 +1,259 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ------------------------------------------------------------------ */
+/*  Tokens de tema (claro / oscuro)                                    */
+/* ------------------------------------------------------------------ */
+
+:root {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --muted: #64748b;
+  --glass: rgba(255, 255, 255, 0.72);
+  --glass-border: rgba(226, 232, 240, 0.9);
+  --brand: #6366f1; /* indigo-500 */
+  --brand-2: #8b5cf6; /* violet-500 */
+  --accent: #d946ef;
+  --card-bg: rgba(255, 255, 255, 0.85);
+  --card-border: #e2e8f0;
+  --campo-bg: #ffffff;
+  --campo-border: #cbd5e1;
+}
+
+.dark {
+  --background: #020617;
+  --foreground: #e2e8f0;
+  --muted: #94a3b8;
+  --glass: rgba(15, 23, 42, 0.72);
+  --glass-border: rgba(148, 163, 184, 0.18);
+  --brand: #818cf8; /* indigo-400 */
+  --brand-2: #a78bfa; /* violet-400 */
+  --accent: #f472b6;
+  --card-bg: rgba(15, 23, 42, 0.8); /* slate-900/80 */
+  --card-border: #1e293b; /* slate-800 */
+  --campo-bg: #020617; /* slate-950 */
+  --campo-border: #334155; /* slate-700 */
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-brand: var(--brand);
+  --color-brand-2: var(--brand-2);
+  --color-accent: var(--accent);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Halos decorativos de fondo */
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  border-radius: 9999px;
+  filter: blur(120px);
+  opacity: 0.25;
+  pointer-events: none;
+  z-index: -1;
+}
+
+body::before {
+  width: 55vw;
+  height: 55vw;
+  top: -22vw;
+  left: -18vw;
+  background: radial-gradient(circle, var(--brand) 0%, transparent 70%);
+}
+
+body::after {
+  width: 50vw;
+  height: 50vw;
+  bottom: -22vw;
+  right: -18vw;
+  background: radial-gradient(circle, var(--brand-2) 0%, transparent 70%);
+}
+
+.dark body::before,
+.dark body::after {
+  opacity: 0.3;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Componentes reutilizables del sistema de diseño                    */
+/* ------------------------------------------------------------------ */
+
+/* Superficie glassmorphism (barras, chips, botones secundarios) */
+.glass {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 8px 32px rgba(2, 6, 23, 0.08);
+}
+
+.dark .glass {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+}
+
+/* Tarjeta de contenido principal */
+.tarjeta {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 1rem;
+  box-shadow: 0 20px 40px -12px rgba(2, 6, 23, 0.18);
+}
+
+.dark .tarjeta {
+  box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.55);
+}
+
+/* Campo de formulario */
+.campo {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  background: var(--campo-bg);
+  border: 1px solid var(--campo-border);
+  color: var(--foreground);
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.campo::placeholder {
+  color: var(--muted);
+}
+
+.campo:focus {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 25%, transparent);
+}
+
+/* Botón primario con gradiente de marca */
+.btn-primario {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.75rem;
+  padding: 0.875rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: linear-gradient(90deg, var(--brand) 0%, var(--brand-2) 100%);
+  box-shadow: 0 10px 24px -8px color-mix(in srgb, var(--brand) 55%, transparent);
+  transition: opacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-primario:hover:not(:disabled) {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+.btn-primario:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  box-shadow: none;
+}
+
+/* Botón secundario glass */
+.btn-secundario {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.75rem;
+  padding: 0.625rem 1.125rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--foreground);
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(12px);
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.btn-secundario:hover {
+  color: var(--brand);
+  border-color: color-mix(in srgb, var(--brand) 45%, transparent);
+}
+
+/* Texto con gradiente de marca (indigo → violeta) */
+.texto-gradiente {
+  background: linear-gradient(120deg, var(--brand) 0%, var(--brand-2) 55%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Chip / badge */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  border-radius: 9999px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  background: color-mix(in srgb, var(--brand) 12%, transparent);
+  color: var(--brand);
+  border: 1px solid color-mix(in srgb, var(--brand) 25%, transparent);
+}
+
+/* Tarjeta con elevación en hover */
+.tarjeta-brillante {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.tarjeta-brillante:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--brand) 45%, transparent);
+  box-shadow: 0 24px 48px -16px color-mix(in srgb, var(--brand) 35%, transparent);
+}
+
+/* Animación de aparición */
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animar-aparecer {
+  animation: aparecer 0.45s ease both;
+}
+
+/* Barra de progreso */
+.barra-progreso {
+  transition: width 0.25s ease;
+}
+
+/* Scrollbar sutil */
+.scroll-fino::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.scroll-fino::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--muted) 40%, transparent);
+  border-radius: 8px;
+}
